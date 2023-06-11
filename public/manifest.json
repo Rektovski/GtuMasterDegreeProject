@@ -1,7 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "description": "",
+  "short_name": "მანძილმზომი",
+  "name": "Master Degree Project - GTU, Otar Murmanishvili",
+  "description": "This project was made by Otar Murmanishvili. The mentioned project works in the event of an accident of a linearly moving car when the car hits a pedestrian crossing the road. Based on the input data, the code will process it, perform calculations and draw a conclusion whether the driver had a physical-technical means or whether the driver had enough distance to the pedestrian to avoid the accident.",
   "icons": [
     {
       "src": "favicon.ico",

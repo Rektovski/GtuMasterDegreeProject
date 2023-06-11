@@ -1,0 +1,114 @@
+.backgroundImage {
+    background-image: url("../assets/backgroundGif.gif");
+    background-color: #cccccc;
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.board {
+    background-color: rgba(22, 211, 211, 0.4);
+    height: 90vh;
+    width: 90vw;
+    padding: 10px;
+    border-radius: 0 20px 0 20px;
+}
+
+.boardTitle, .boardDescription {
+    text-align: center;
+}
+
+.boardTitle {
+    color: white;
+    font-size: 2rem;
+}
+
+.boardDescription {
+    color: white;
+    font-size: 1.6rem;
+}
+
+.boardBody {
+    display: flex;
+    justify-content: space-around;
+    height: 80%;
+    padding: 10px;
+}
+
+.boardLeft {
+    width: 100%;
+}
+
+.boardRight {
+    border: 1px solid yellow;
+    width: 100%;
+}
+
+.boardLeftForm {
+    color: white;
+    font-family: "Roboto Light", sans-serif;
+}
+
+.formLabel {
+    display: flex;
+}
+
+.formInput {
+    color: black;
+    background: lightyellow;
+    width: 130px;
+    transition: 1s;
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+.formInput:hover {
+    transition: all 0.1s ease-in-out;
+    width: 150px;
+}
+
+.formButtonSpace {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.formButton {
+    width: 120px;
+    height: 36px;
+    background: #324d5d;
+    transition: 0.5s;
+}
+
+.formButton:hover {
+    transition: all 0.5s ease-in-out;
+    border-radius: 20px;
+    background: lightblue;
+    color: black;
+}
+
+.historyButtonSpace {
+    display: flex;
+    justify-content: end;
+    padding: 10px;
+}
+
+.historyButton {
+    color: snow;
+    background: black;
+    width: 120px;
+    height: 36px;
+    transition: all 0.5s ease-in-out;
+}
+
+.historyButton:hover {
+    transition: all 0.5s ease-in-out;
+    color: black;
+    background: white;
+    border-radius: 20px;
+}
