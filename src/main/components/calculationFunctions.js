@@ -7,15 +7,14 @@ const lengthBeforeBarrier = (carVelocity, humanVelocity, humanLength) => {
 }
 
 export const driverNeed = (form) => {
-    const {t1, t2, t3, carVelocity, humanVelocity, humanLength, J} = form;
+    const {t1, t2, t3, carVelocity, J} = form;
     return forStop(t1, t2, t3, carVelocity, J);
 }
 
 export const driverHas = (form) => {
-    const {t1, t2, t3, carVelocity, humanVelocity, humanLength, J} = form;
+    const {carVelocity, humanVelocity, humanLength} = form;
     return lengthBeforeBarrier(carVelocity, humanVelocity, humanLength);
 }
-
 
 export const isDriverGuilty = (form) => {
     const {t1, t2, t3, carVelocity, humanVelocity, humanLength, J} = form;

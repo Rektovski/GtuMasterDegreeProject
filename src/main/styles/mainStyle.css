@@ -12,7 +12,7 @@
 }
 
 .board {
-    background-color: rgba(22, 211, 211, 0.4);
+    background-color: rgba(142, 67, 196, 0.75);
     height: 90vh;
     width: 90vw;
     padding: 10px;
@@ -45,7 +45,6 @@
 }
 
 .boardRight {
-    border: 1px solid yellow;
     width: 100%;
 }
 
@@ -61,41 +60,56 @@
 .formInput {
     color: black;
     background: lightyellow;
-    width: 130px;
+    width: 180px;
     transition: 1s;
     margin-left: auto;
-    margin-right: 5px;
+    margin-right: 10px;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-top: 1px;
 }
 
 .formInput:hover {
     transition: all 0.1s ease-in-out;
-    width: 150px;
+    width: 220px;
 }
 
 .formButtonSpace {
     display: flex;
     justify-content: center;
-    padding: 10px;
 }
 
 .formButton {
+    background: whitesmoke;
+    margin: 0 2px;
     width: 120px;
-    height: 36px;
-    background: #324d5d;
+    height: 40px;
     transition: 0.5s;
+    border-radius: 10px;
+    color: black;
 }
 
 .formButton:hover {
     transition: all 0.5s ease-in-out;
     border-radius: 20px;
-    background: lightblue;
-    color: black;
+    color: darkslategray;
 }
 
-.historyButtonSpace {
-    display: flex;
-    justify-content: end;
-    padding: 10px;
+.formButtonHistory {
+    background: #fd2727;
+    margin: 0 2px;
+    width: 120px;
+    height: 40px;
+    transition: 0.5s;
+    border-radius: 10px;
+    color: white;
+}
+
+.formButtonHistory:hover {
+    transition: all 0.5s ease-in-out;
+    border-radius: 20px;
+    background: black;
+    color: white;
 }
 
 .historyButton {
@@ -111,4 +125,35 @@
     color: black;
     background: white;
     border-radius: 20px;
+}
+
+.pcMonitorContainer {
+    background-image: url("../../main/assets/pcMonitorImage.svg");
+    height: 100%; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    z-index: 1;
+}
+
+.pcMonitorText {
+    padding: 10px;
+}
+
+.ModalHistoryHeader {
+    font-size: 3rem;
+    padding: 20px;
+}
+
+.HistoryListItem {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+
+.HistoryListItem:hover {
+    transition: 0.5s all ease-in-out;
+    background: rgba(92, 231, 209, 0.11);
 }

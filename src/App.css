@@ -32,3 +32,7 @@ a:hover {
   background: #7e7c7c;
   border-radius: 0;
 }
+
+input:focus {
+  outline: none;
+}
