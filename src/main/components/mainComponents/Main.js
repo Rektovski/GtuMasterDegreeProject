@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import "../styles/mainStyle.css";
-import {isDriverGuilty, driverHas, driverNeed} from "./calculationFunctions";
-import {dateNow} from "./dateFunction";
+import "../../styles/mainStyle.css";
+import {isDriverGuilty, driverHas, driverNeed} from "../helperFunctions/calculationFunctions";
+import {dateNow} from "../helperFunctions/dateFunction";
 import MonitorAnswer from "./MonitorAnswer";
 import axios from "axios";
 import {
@@ -13,8 +13,6 @@ import {
     ModalFooter,
     ModalOverlay,
     useDisclosure,
-    ListItem,
-    OrderedList,
 } from "@chakra-ui/react";
 import {ModalHeader} from "react-bootstrap";
 import {ExperimentDetails} from "./ExperimentDetails";
@@ -50,37 +48,55 @@ export default function Main() {
         ));
     }
 
-    const handleSubmit = async (e) => {
+    const calculateInformationAndSendItToAPI = async (e) => {
         e.preventDefault();
 
+        // true or false
         setResult(isDriverGuilty(form));
 
+        // Detailed info about needed and had distances.
+        setNeed(driverNeed(form));
+        setHas(driverHas(form));
+
+        // Server was so dumb that while creating database I couldn't add more key's, so I added date from here.
         form["date"] = dateNow();
 
-        await axios.post("https://retoolapi.dev/YDc5T9/gtumurmanishvilimasterdegreeprojectserverapi", form)
+        // Sending data to database (API)
+        await axios
+            .post("https://retoolapi.dev/YDc5T9/gtumurmanishvilimasterdegreeprojectserverapi", form)
             .then(r => console.log(r))
             .catch(e => console.error("Error: " + e));
 
-        setNeed(driverNeed(form));
-        setHas(driverHas(form));
+        // Reseting inputs in the form after gaining results.
+        setForm(defaultForm);
 
         setDate(dateNow);
     };
 
     const getHistoryDataFromServerAPI = async () => {
         await axios.get("https://retoolapi.dev/YDc5T9/gtumurmanishvilimasterdegreeprojectserverapi")
-            .then(response => setDataList(response.data))
+            .then(response => {
+                let data = response.data.sort((a, b) => b.id - a.id);
+                setDataList(data);
+            })
             .catch(error => console.error("Error: " + error));
     }
 
     useEffect(() => {
         getHistoryDataFromServerAPI();
-    }, []);
+    }, [date]);
 
+    const logout = () => {
+        localStorage.clear('user');
+        window.location.reload();
+    }
 
     return (
         <>
             <div className={'backgroundImage'}>
+                <div className={'logoutBtnSpace'}>
+                    <button className={'logoutBtn'} onClick={logout}>გამოსვლა</button>
+                </div>
                 <div className={'board'}>
                     <div className={'boardTitle'}>საექსპერიმენტო ლაბორატორია</div>
                     <div className={'boardDescription'}>გზაზე გადამსვლელ ქვეითს დაეჯახა მანქანა. საჭიროა დადგინდეს
@@ -88,7 +104,7 @@ export default function Main() {
                     </div>
                     <div className={'boardBody'}>
                         <div className={'boardLeft'}>
-                            <form className={'boardLeftForm'} onSubmit={handleSubmit}>
+                            <form className={'boardLeftForm'} onSubmit={calculateInformationAndSendItToAPI}>
                                 <label className={'formLabel'} htmlFor={"t1"}>
                                     რეაქციის დრო:
                                     <input
@@ -229,7 +245,7 @@ export default function Main() {
                                 <br/>
                                 <div className={'formButtonSpace'}>
                                     <button className={'formButton'} type="submit">კალკულაცია</button>
-                                    <button className={'formButtonHistory'} onClick={onOpen}>ისტორია</button>
+                                    <button className={'formButtonHistory'} type={"button"} onClick={onOpen}>ისტორია</button>
                                 </div>
                             </form>
                         </div>
@@ -274,7 +290,8 @@ export default function Main() {
                 onHide={() => {
                     setModalVisible(false);
                 }}
-                iacw={item}
+                data={item}
+                date={date}
             />
         </>
     )

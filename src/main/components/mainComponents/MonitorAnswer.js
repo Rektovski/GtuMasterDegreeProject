@@ -1,4 +1,4 @@
-import "../styles/monitorAnswerStyle.css";
+import "../../styles/monitorAnswerStyle.css";
 
 export default function MonitorAnswer(object) {
     const {result, has, need, date} = object;

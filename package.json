@@ -26,7 +26,8 @@
     "react-scripts": "5.0.1",
     "sass": "^1.57.1",
     "scss": "^0.2.4",
-    "web-vitals": "^2.1.0"
+    "web-vitals": "^2.1.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   },
   "scripts": {
     "start": "react-scripts start",
