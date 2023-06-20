@@ -19,10 +19,10 @@ export const ExperimentDetails = (props) => {
 
     return (
         <Modal
-            style={{zIndex: 10000}}
             {...props}
             fullscreen={true}
             aria-labelledby="example-modal-sizes-title-lg"
+            className={'experimentDetailsModal'}
         >
             <Modal.Header closeButton>
                 <h1 className={'experimentId'}>

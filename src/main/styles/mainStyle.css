@@ -23,12 +23,12 @@
     height: 40px;
     background: white;
     color: black;
-    transition: 0.5s;
+    transition: 0.2s;
     border-radius: 10px;
 }
 
 .logoutBtn:hover {
-    transition: 0.5s all ease-in-out;
+    transition: 0.2s all ease-in-out;
     background: black;
     color: white;
 }
@@ -108,13 +108,13 @@
     margin: 0 2px;
     width: 120px;
     height: 40px;
-    transition: 0.5s;
+    transition: 0.2s;
     border-radius: 10px;
     color: black;
 }
 
 .formButton:hover {
-    transition: all 0.5s ease-in-out;
+    transition: all 0.2s ease-in-out;
     border-radius: 20px;
     color: darkslategray;
 }
@@ -124,13 +124,30 @@
     margin: 0 2px;
     width: 120px;
     height: 40px;
-    transition: 0.5s;
+    transition: 0.2s;
     border-radius: 10px;
     color: white;
 }
 
 .formButtonHistory:hover {
-    transition: all 0.5s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    border-radius: 20px;
+    background: black;
+    color: white;
+}
+
+.formButtonTable {
+    transition: 0.2s;
+    border-radius: 10px;
+    margin: 0 2px;
+    width: 120px;
+    height: 40px;
+    background: white;
+    color: black;
+}
+
+.formButtonTable:hover {
+    transition: 0.2s all ease-in-out;
     border-radius: 20px;
     background: black;
     color: white;
@@ -141,11 +158,11 @@
     background: black;
     width: 120px;
     height: 36px;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .historyButton:hover {
-    transition: all 0.5s ease-in-out;
+    transition: all 0.2s ease-in-out;
     color: black;
     background: white;
     border-radius: 20px;
@@ -178,13 +195,13 @@
     margin: 10px;
     border: 1px solid gray;
     border-radius: 10px;
-    transition: 0.5s;
+    transition: 0.2s;
     background: white;
     color: black
 }
 
 .HistoryListItem:hover {
-    transition: 0.5s all ease-in-out;
+    transition: 0.2s all ease-in-out;
     background: #5fc5aa;
     color: white;
     font-size: 1.2rem;

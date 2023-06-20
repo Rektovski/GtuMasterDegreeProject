@@ -1,3 +1,7 @@
+.experimentDetailsModal {
+    z-index: 10000;
+}
+
 .experimentId {
     border: 3px dotted black;
     padding: 4px;

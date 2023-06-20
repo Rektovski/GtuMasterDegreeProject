@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import {ModalHeader} from "react-bootstrap";
 import {ExperimentDetails} from "./ExperimentDetails";
+import {TableGallery} from "./TableGallery";
 
 const API = 'https://retoolapi.dev/hN9mV9/gtumurmanishvilimasterdegreeprojectserverapi';
 
@@ -45,8 +46,9 @@ export default function Main() {
     const [dataList, setDataList] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [item, setItem] = useState({});
+    const [tableOpen, setTableOpen] = useState(false);
 
-    const {isOpen, onOpen, onClose} = useDisclosure()
+    const {isOpen, onOpen, onClose} = useDisclosure();
 
     const handleChange = (e) => {
         setForm((prevState) => ({
@@ -95,11 +97,11 @@ export default function Main() {
     }
 
     useEffect(() => {
-        getHistoryDataFromServerAPI();
+        getHistoryDataFromServerAPI().then(r=>console.log(r)).catch(e=>console.error("Error: ", e));
     }, [date]);
 
     const logout = () => {
-        localStorage.clear('user');
+        localStorage.clear();
         window.location.reload();
     }
 
@@ -258,6 +260,9 @@ export default function Main() {
                                 <div className={'formButtonSpace'}>
                                     <button className={'formButton'} type="submit">კალკულაცია</button>
                                     <button className={'formButtonHistory'} type={"button"} onClick={onOpen}>ისტორია</button>
+                                    <button className={'formButtonTable'} type={"button"} onClick={() => {
+                                        setTableOpen(true);
+                                    }}>ცხრილები</button>
                                 </div>
                             </form>
                         </div>
@@ -297,13 +302,11 @@ export default function Main() {
                 </ModalContent>
             </Modal>
 
-            <ExperimentDetails
-                show={modalVisible}
-                onHide={() => {
-                    setModalVisible(false);
-                }}
-                data={item}
-            />
+            <ExperimentDetails show={modalVisible} onHide={() => { setModalVisible(false); }} data={item} />
+
+            <TableGallery style={{visibility: tableOpen ? "unset" : "hidden"}} show={tableOpen} onHide={() => {
+                setTableOpen(false);
+            }}/>
         </>
     )
 }
