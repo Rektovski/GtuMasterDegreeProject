@@ -15,7 +15,6 @@ export const TableGallery = (props) => {
     }, [images]);
 
 
-
     const chooseImageWithArrow = (where) => {
         const currentIndex = images.indexOf(image);
         let newIndex;
@@ -45,15 +44,15 @@ export const TableGallery = (props) => {
                 </div>
                 <div className={'tableGallery'}>
                     <div className={'gallery'}>
-                        <div className={'galleryItem'}>
-                            <img className={'galleryItemIcon'} src={humanIcon} alt={'humanIcon'} onClick={() => {
-                                setImages(pedestrianImages)
-                            }}/>
+                        <div className={'galleryItem'} onClick={() => {
+                            setImages(pedestrianImages)
+                        }}>
+                            <img className={'galleryItemIcon'} src={humanIcon} alt={'humanIcon'}/>
                         </div>
-                        <div className={'galleryItem'}>
-                            <img className={'galleryItemIcon'} src={carIcon} alt={'carIcon'} onClick={() => {
-                                setImages(carImages)
-                            }}/>
+                        <div className={'galleryItem'} onClick={() => {
+                            setImages(carImages)
+                        }}>
+                            <img className={'galleryItemIcon'} src={carIcon} alt={'carIcon'}/>
                         </div>
                     </div>
                     <div className={'album'}>
