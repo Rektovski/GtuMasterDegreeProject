@@ -42,23 +42,23 @@ export const ExperimentDetails = (props) => {
                     <div className={"experimentListItem"}>რეაქციის დრო <div>{data.t1}</div></div>
                     <div className={"experimentListItem"}>მუხრუჭის დაყოვნებისთვის საჭირო დრო <div>{data.t2}</div>
                     </div>
-                    <div className={"experimentListItem"}>მუხრუჭის მაქსიმალური ეფექტისათვის საჭირო დრო
-                        - <div>{data.t3}</div></div>
+                    <div className={"experimentListItem"}>მუხრუჭის მაქსიმალური ეფექტისათვის საჭირო
+                        დრო <div>{data.t3}</div></div>
                     <div className={"experimentListItem"}>მანქანის სიჩქარე <div>{data.carVelocity}</div></div>
                     <div className={"experimentListItem"}>ქვეითის სიჩქარე <div>{data.humanVelocity}</div></div>
                     <div className={"experimentListItem"}>ქვეითის მიერ მანქანის სავალ ნაწილზე გადასვლისას გავლილი
                         მანძილი <div>{data.humanLength}</div></div>
-                    <div className={"experimentListItem"}>მაქსიმალური ნიშნიანი აჩქარება კონკრეტულ გრუნტზე
-                        - <div>{data.J}</div></div>
+                    <div className={"experimentListItem"}>მაქსიმალური ნიშნიანი აჩქარება კონკრეტულ
+                        გრუნტზე <div>{data.J}</div></div>
 
                     <div className={'experimentResultsSpace'}>
                         <div className={'experimentResults'}>
                             <h3 className={'experimentResultsTitle'}>მიღებული შედეგები</h3>
                             <div>
-                                მძღოლს გასაჩერებლად სჭირდებოდა {`${need.toFixed(2)}`} მეტრი <br/>
+                                მძღოლს გასაჩერებლად სჭირდებოდა <b>{`${need.toFixed(2)}`} მეტრი</b> <br/>
                             </div>
                             <div>
-                                მძღოლს გასაჩერებლად ჰქონდა {`${has.toFixed(2)}`} მეტრი
+                                მძღოლს გასაჩერებლად ჰქონდა <b>{`${has.toFixed(2)}`} მეტრი</b>
                             </div>
                         </div>
                     </div>
@@ -66,16 +66,21 @@ export const ExperimentDetails = (props) => {
                     <div className={'experimentConclusionSpace'}>
                         <h3 className={'experimentConclusionTitle'}>საექსპერტო დასკვნა</h3>
                         <p className={'experimentConclusion'}>
-                            {date} რიცხვში, {time} საათზე, ექსპერტი <b>{user}</b>-ის მიერ ჩატარებული <b>No̱: {data.id}</b> კვლევის
-                            შემდეგ დადგინა, რომ ავტოსატრანსპორტო საშუალების მძღოლი, პიროვნება, <b>{data.driverFullName}</b> {
-                            data.guilty ? "დამნაშავეა. მძღოლს საკმარისი დისტანცია ჰქონდა ავტო სატრანპსორტო საშუალების გასაჩერებლად და მან ეს დისტანცია ვერ გამოიყენა დაუდგენელი მიზეზებიდან გამომდინარე. (იგულისხმება, რომ: \n 1. მძღოლი შემოწმებული იყო ალკოჰოლურ და ნარკოტიკულ სიმთვრალზე, რაზეც უარყოფითი შედეგი იქნა მიღებული; \n2. სამუხრუჭე სისტემა ცალკე კვლევის შედეგად გამართული იყო.)"
+                            {date} რიცხვში, {time} საათზე, ექსპერტი <b>{user}</b>-ის მიერ
+                            ჩატარებული <b>No̱: {data.id}</b> კვლევის
+                            შემდეგ დადგინდა, რომ ავტოსატრანსპორტო საშუალების მძღოლი,
+                            პიროვნება, <b>{data.driverFullName}</b> {
+                            data.guilty ? "დამნაშავეა. მძღოლს საკმარისი დისტანცია ჰქონდა ავტო სატრანპსორტო საშუალების გასაჩერებლად და მან ეს დ" +
+                                "ისტანცია ვერ გამოიყენა დაუდგენელი მიზეზებიდან გამომდინარე. (იგულისხმება, რომ: \n 1. " +
+                                "მძღოლი შემოწმებული იყო ალკოჰოლურ და ნარკოტიკულ სიმთვრალეზე, რაზეც უარყოფითი შედეგი იქნა მიღებული; \n2." +
+                                " სამუხრუჭე სისტემა ცალკე კვლევის შედეგად გამართული იყო.)"
                                 :
                                 "უდანაშაულოა. აღნიშნულ შემთხვაში მძღოლს არ ჰქონდა ფიზიკურ-ტექნიკური საშუალება დროულად გაეჩერებინა მანქანა და თავიდან აერიდებინა ავარია."
                         }
-                        <br />
-                        <br />
-                        <br />
-                        <br />
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
                             <div className={'experimentAuthorsUsersSignature'}>
                                 ხელმოწერა:
                                 <img src={signature} alt={'signature'}/>
