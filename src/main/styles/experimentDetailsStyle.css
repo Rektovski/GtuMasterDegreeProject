@@ -1,0 +1,65 @@
+.experimentId {
+    border: 3px dotted black;
+    padding: 4px;
+    border-radius: 10px 0 10px 10px;
+}
+
+.experimentCalendar, .experimentTime {
+    text-decoration: underline;
+    font-style: italic;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.experimentAuthorUser {
+    text-align: center;
+}
+
+.experimentListItemTitle {
+    padding: 10px;
+}
+
+.experimentListItem {
+    border: 1px solid lightgray;
+    padding: 5px;
+    border-radius: 10px 0 10px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.experimentResultsSpace {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.experimentResultsTitle {
+    padding: 10px;
+}
+
+.experimentResults {
+    margin: 50px 0;
+    display: inline-block;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.experimentConclusionSpace {
+    border: 1px solid black;
+}
+
+.experimentConclusionTitle {
+    text-align: center;
+    padding: 20px;
+}
+
+.experimentConclusion {
+    text-indent: 4em;
+    text-align: justify;
+    margin: 50px 100px -20px 100px;
+}
+
+.experimentAuthorsUsersSignature {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}

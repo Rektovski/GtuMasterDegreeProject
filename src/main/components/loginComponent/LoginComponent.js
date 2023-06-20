@@ -1,7 +1,8 @@
 import "../../styles/loginComponentStyle.css";
-import {useContext, useState} from "react";
+import {useState} from "react";
 import {Button, Container} from "@chakra-ui/react";
 import {Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
+import {GiPoliceBadge} from "react-icons/gi";
 
 export const LoginComponent = () => {
     const [username, setUsername] = useState('');
@@ -9,7 +10,7 @@ export const LoginComponent = () => {
 
     const authorization = async (event) => {
         event.preventDefault();
-        if(password === "CISDEPARTMENT"){
+        if(password === "1234"){
             localStorage.setItem("user", username);
         }
         window.location.reload();
@@ -19,7 +20,13 @@ export const LoginComponent = () => {
         <>
             <div className={'centeredLogin'}>
                 <Container>
-                    <Form onSubmit={authorization}>
+                    <Form className={'formSpace'} onSubmit={authorization}>
+                        <div className={'formIconSpace'}>
+                            <GiPoliceBadge className={'formIcon'} size={40}/>
+                            <div className={'formTitle'}>
+                                <h1>E</h1><h6>Laboratory</h6>
+                            </div>
+                        </div>
                         <FormGroup className={'my-2'}>
                             <FormLabel>Username:</FormLabel>
                             <FormControl

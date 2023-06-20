@@ -1,14 +1,14 @@
 .backgroundImage {
-    background-image: url("../assets/backgroundGif.gif");
-    background-color: #cccccc;
     height: 100vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: flex;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    position: absolute;
+    display: grid;
+    place-items: center;
     justify-content: center;
-    align-content: center;
-    align-items: center;
+    color: white;
+    background: darkslategray url("../../main/assets/labIcon.png") center no-repeat;
 }
 
 .logoutBtnSpace {
@@ -34,7 +34,7 @@
 }
 
 .board {
-    background-color: rgba(142, 67, 196, 0.75);
+    background-color: rgba(0, 0, 0, 0.66);
     height: 90vh;
     width: 90vw;
     padding: 10px;
@@ -60,6 +60,8 @@
     justify-content: space-around;
     height: 80%;
     padding: 10px;
+    position: relative;
+    top: 30px;
 }
 
 .boardLeft {
@@ -151,11 +153,15 @@
 
 .pcMonitorContainer {
     background-image: url("../../main/assets/pcMonitorImage.svg");
+    opacity: 90%;
     height: 100%; /* You must set a specified height */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
     z-index: 1;
+    position: relative;
+    top: 40px;
+    transform: rotateX(15deg) rotateY(30deg);
 }
 
 .pcMonitorText {
@@ -173,9 +179,14 @@
     border: 1px solid gray;
     border-radius: 10px;
     transition: 0.5s;
+    background: white;
+    color: black
 }
 
 .HistoryListItem:hover {
     transition: 0.5s all ease-in-out;
-    background: rgba(92, 231, 209, 0.11);
+    background: #5fc5aa;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
 }

@@ -17,6 +17,8 @@ import {
 import {ModalHeader} from "react-bootstrap";
 import {ExperimentDetails} from "./ExperimentDetails";
 
+const API = 'https://retoolapi.dev/hN9mV9/gtumurmanishvilimasterdegreeprojectserverapi';
+
 const defaultForm = {
     t1: 0,
     t2: 0,
@@ -26,7 +28,12 @@ const defaultForm = {
     humanLength: 0,
     J: 0,
     driverFullName: "",
-    pedestrianFullName: ""
+    pedestrianFullName: "",
+    date: "",
+    time: "",
+    has: null,
+    need: null,
+    guilty: null,
 }
 
 export default function Main() {
@@ -50,31 +57,36 @@ export default function Main() {
 
     const calculateInformationAndSendItToAPI = async (e) => {
         e.preventDefault();
+        form.date = dateNow('date');
+        form.time = dateNow('time');
 
         // true or false
         setResult(isDriverGuilty(form));
+        form.guilty = isDriverGuilty(form);
 
         // Detailed info about needed and had distances.
+        // For localUse
         setNeed(driverNeed(form));
         setHas(driverHas(form));
 
-        // Server was so dumb that while creating database I couldn't add more key's, so I added date from here.
-        form["date"] = dateNow();
+        // For API
+        form.need = driverNeed(form);
+        form.has = driverHas(form);
 
         // Sending data to database (API)
         await axios
-            .post("https://retoolapi.dev/YDc5T9/gtumurmanishvilimasterdegreeprojectserverapi", form)
+            .post(API, form)
             .then(r => console.log(r))
             .catch(e => console.error("Error: " + e));
 
-        // Reseting inputs in the form after gaining results.
+        // Resetting inputs in the form after gaining results.
         setForm(defaultForm);
 
         setDate(dateNow);
     };
 
     const getHistoryDataFromServerAPI = async () => {
-        await axios.get("https://retoolapi.dev/YDc5T9/gtumurmanishvilimasterdegreeprojectserverapi")
+        await axios.get(API)
             .then(response => {
                 let data = response.data.sort((a, b) => b.id - a.id);
                 setDataList(data);
@@ -291,7 +303,6 @@ export default function Main() {
                     setModalVisible(false);
                 }}
                 data={item}
-                date={date}
             />
         </>
     )

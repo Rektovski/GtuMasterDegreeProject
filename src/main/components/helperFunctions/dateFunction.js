@@ -1,12 +1,16 @@
-export const dateNow = () => {
+export const dateNow = (which) => {
     const currentTime = new Date();
 
-    const day = currentTime.getDate();
-    const month = currentTime.getMonth() + 1; // Months are zero-based, so we add 1
-    const year = currentTime.getFullYear();
+    if(which === 'date') {
+        const day = currentTime.getDate();
+        const month = currentTime.getMonth() + 1; // Months are zero-based, so we add 1
+        const year = currentTime.getFullYear();
 
-    const formattedDate = `${day < 10 ? "0" + day : day}/${month < 10 ? "0" + month : month}/${year}`;
+        return `${day < 10 ? "0" + day : day}/${month < 10 ? "0" + month : month}/${year}`;
+    }
 
+
+    // time version
     let hours = currentTime.getHours().toString();
     let minutes = currentTime.getMinutes().toString();
     let seconds = currentTime.getSeconds().toString();
@@ -21,5 +25,5 @@ export const dateNow = () => {
         seconds = `0${seconds}`;
     }
 
-    return formattedDate + ": " + hours + ' : ' + minutes + ' : ' + seconds;
+    return hours + ' : ' + minutes + ' : ' + seconds;
 }
