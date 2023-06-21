@@ -36,7 +36,7 @@ export const TableGallery = (props) => {
 
     return (
         <>
-            <div className={'tableGallerySpace'} {...props}>
+            <div className={'tableGallerySpace'}>
                 <div className={'tableCloseBtn'} onClick={() => {
                     props.onHide();
                 }}>

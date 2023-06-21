@@ -1,0 +1,1 @@
+export const UserAPI = 'https://retoolapi.dev/pnUERB/gtumurmanishvilimasterdegreeprojectserverapiuserapi';

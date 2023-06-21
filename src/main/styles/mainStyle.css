@@ -153,21 +153,6 @@
     color: white;
 }
 
-.historyButton {
-    color: snow;
-    background: black;
-    width: 120px;
-    height: 36px;
-    transition: all 0.2s ease-in-out;
-}
-
-.historyButton:hover {
-    transition: all 0.2s ease-in-out;
-    color: black;
-    background: white;
-    border-radius: 20px;
-}
-
 .pcMonitorContainer {
     background-image: url("../../main/assets/pcMonitorImage.svg");
     opacity: 90%;
@@ -183,27 +168,4 @@
 
 .pcMonitorText {
     padding: 10px;
-}
-
-.ModalHistoryHeader {
-    font-size: 3rem;
-    padding: 20px;
-}
-
-.HistoryListItem {
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid gray;
-    border-radius: 10px;
-    transition: 0.2s;
-    background: white;
-    color: black
-}
-
-.HistoryListItem:hover {
-    transition: 0.2s all ease-in-out;
-    background: #5fc5aa;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
 }

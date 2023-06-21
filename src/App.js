@@ -5,26 +5,22 @@ import {useEffect, useState} from "react";
 import {LoginComponent} from "./main/components/loginComponent/LoginComponent";
 
 export default function App() {
-    const [user, setUser] = useState("");
-
-    const getUser = () => {
-        setUser(localStorage.getItem('user'));
-    }
+    let user = localStorage.getItem('user');
 
     useEffect(() => {
-        getUser();
-    }, []);
+
+    }, [user]);
 
     return (
         <ChakraProvider>
             <div className="App">
                 {
-                    user === "otarim" ?
-                        <Main/>
-                        :
+                    user === null || user === undefined ?
                         <LoginComponent/>
+                        :
+                        <Main/>
                 }
-            </div>
+                </div>
         </ChakraProvider>
     );
 }

@@ -4,21 +4,10 @@ import {isDriverGuilty, driverHas, driverNeed} from "../helperFunctions/calculat
 import {dateNow} from "../helperFunctions/dateFunction";
 import MonitorAnswer from "./MonitorAnswer";
 import axios from "axios";
-import {
-    Button,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
-    useDisclosure,
-} from "@chakra-ui/react";
-import {ModalHeader} from "react-bootstrap";
-import {ExperimentDetails} from "./ExperimentDetails";
 import {TableGallery} from "./TableGallery";
-
-const API = 'https://retoolapi.dev/hN9mV9/gtumurmanishvilimasterdegreeprojectserverapi';
+import {ModalHistory} from "./ModalHistory";
+import {API} from "../APIServers/API";
+import {UserAPI} from "../APIServers/UserAPI";
 
 const defaultForm = {
     t1: 0,
@@ -43,12 +32,9 @@ export default function Main() {
     const [has, setHas] = useState(0);
     const [need, setNeed] = useState(0);
     const [date, setDate] = useState('');
-    const [dataList, setDataList] = useState([]);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [item, setItem] = useState({});
-    const [tableOpen, setTableOpen] = useState(false);
+    const [historyModalVisible, setHistoryModalVisible] = useState(false);
+    const [tableVisible, setTableVisible] = useState(false);
 
-    const {isOpen, onOpen, onClose} = useDisclosure();
 
     const handleChange = (e) => {
         setForm((prevState) => ({
@@ -75,6 +61,9 @@ export default function Main() {
         form.need = driverNeed(form);
         form.has = driverHas(form);
 
+        form["user"] = localStorage.getItem('user');
+        form["userId"] = localStorage.getItem('userId');
+
         // Sending data to database (API)
         await axios
             .post(API, form)
@@ -87,23 +76,25 @@ export default function Main() {
         setDate(dateNow);
     };
 
-    const getHistoryDataFromServerAPI = async () => {
-        await axios.get(API)
-            .then(response => {
-                let data = response.data.sort((a, b) => b.id - a.id);
-                setDataList(data);
-            })
-            .catch(error => console.error("Error: " + error));
-    }
-
-    useEffect(() => {
-        getHistoryDataFromServerAPI().then(r=>console.log(r)).catch(e=>console.error("Error: ", e));
-    }, [date]);
 
     const logout = () => {
         localStorage.clear();
         window.location.reload();
     }
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                setTableVisible(false);
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [setTableVisible]);
 
     return (
         <>
@@ -259,9 +250,11 @@ export default function Main() {
                                 <br/>
                                 <div className={'formButtonSpace'}>
                                     <button className={'formButton'} type="submit">კალკულაცია</button>
-                                    <button className={'formButtonHistory'} type={"button"} onClick={onOpen}>ისტორია</button>
+                                    <button className={'formButtonHistory'} type={"button"} onClick={() => {
+                                        setHistoryModalVisible(true);
+                                    }}>ისტორია</button>
                                     <button className={'formButtonTable'} type={"button"} onClick={() => {
-                                        setTableOpen(true);
+                                        setTableVisible(true);
                                     }}>ცხრილები</button>
                                 </div>
                             </form>
@@ -278,35 +271,11 @@ export default function Main() {
                 </div>
             </div>
 
-            <Modal isOpen={isOpen} onClose={onClose} size={'full'}>
-                <ModalOverlay/>
-                <ModalContent>
-                    <ModalHeader className={'ModalHistoryHeader'}>კვლევათა ნუსხა</ModalHeader>
-                    <ModalCloseButton/>
-                    <ModalBody>
-                        {dataList.map((item, id) => (
-                            <div key={id} className={'HistoryListItem'} onClick={() => {
-                                setItem(item);
-                                setModalVisible(true);
-                            }}>
-                                {`კვლევა #${item.id}. მძღოლი - ${item.driverFullName}. ქვეითი - ${item.pedestrianFullName}`}
-                            </div>
-                        ))}
-                    </ModalBody>
+            <ModalHistory show={historyModalVisible} onHide={() => setHistoryModalVisible(false)} date={date}/>
 
-                    <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={onClose}>
-                            დახურვა
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-
-            <ExperimentDetails show={modalVisible} onHide={() => { setModalVisible(false); }} data={item} />
-
-            <TableGallery style={{visibility: tableOpen ? "unset" : "hidden"}} show={tableOpen} onHide={() => {
-                setTableOpen(false);
-            }}/>
+            {
+                tableVisible && <TableGallery onHide={() => setTableVisible(false)}/>
+            }
         </>
     )
 }

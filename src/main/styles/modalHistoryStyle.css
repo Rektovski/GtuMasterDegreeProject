@@ -1,0 +1,22 @@
+.ModalHistoryHeader {
+    font-size: 3rem;
+    padding: 20px;
+}
+
+.ModalHistoryListItem {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    transition: 0.2s;
+    background: white;
+    color: black
+}
+
+.ModalHistoryListItem:hover {
+    transition: 0.2s all ease-in-out;
+    background: #5fc5aa;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}

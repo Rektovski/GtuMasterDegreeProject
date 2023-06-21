@@ -2,20 +2,38 @@ import Modal from 'react-bootstrap/Modal';
 import React, {useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
 import "../../styles/experimentDetailsStyle.css";
-import signature from "../../assets/signature.png";
+import {UserAPI} from "../APIServers/UserAPI";
+import axios from "axios";
 
 export const ExperimentDetails = (props) => {
     const {data} = props;
-    const [user, setUser] = useState("");
     const has = data.has || 0;
     const need = data.need || 0;
     const date = data.date;
     const time = data.time;
-
+    const [authorUser, setAuthorUser] = useState("");
+    const [authorSignature, setAuthorSignature] = useState("");
 
     useEffect(() => {
-        setUser(localStorage.getItem('user'));
-    }, []);
+        const fetchUserData = async () => {
+            try {
+                const userResponse = await axios.get(UserAPI);
+                const users = userResponse.data;
+                const author = users.find(item => item.userId === data.userId);
+                if (author) {
+                    setAuthorSignature(author.signature);
+                    setAuthorUser(author.username);
+                }
+            } catch (error) {
+                console.log("Error while fetching user data:", error);
+            }
+        };
+
+        const storedUser = localStorage.getItem('user');
+        setAuthorUser(storedUser);
+
+        fetchUserData();
+    }, [data.userId]);
 
     return (
         <Modal
@@ -32,7 +50,7 @@ export const ExperimentDetails = (props) => {
             <Modal.Body>
                 <h5 className={'experimentCalendar'}>თარიღი - {date}</h5>
                 <h5 className={'experimentTime'}>დრო - {time}</h5>
-                <h3 className={'experimentAuthorUser'}>ექსპერტი: {user}</h3>
+                <h3 className={'experimentAuthorUser'}>ექსპერტი: {authorUser}</h3>
 
                 <Container>
                     <h3 className={'experimentListItemTitle'}>მონაცემები</h3>
@@ -65,8 +83,8 @@ export const ExperimentDetails = (props) => {
 
                     <div className={'experimentConclusionSpace'}>
                         <h3 className={'experimentConclusionTitle'}>საექსპერტო დასკვნა</h3>
-                        <p className={'experimentConclusion'}>
-                            {date} რიცხვში, {time} საათზე, ექსპერტი <b>{user}</b>-ის მიერ
+                        <div className={'experimentConclusion'}>
+                            {date} რიცხვში, {time} საათზე, ექსპერტი <b>{authorUser}</b>-ის მიერ
                             ჩატარებული <b>No̱: {data.id}</b> კვლევის
                             შემდეგ დადგინდა, რომ ავტოსატრანსპორტო საშუალების მძღოლი,
                             პიროვნება, <b>{data.driverFullName}</b> {
@@ -83,9 +101,10 @@ export const ExperimentDetails = (props) => {
                             <br/>
                             <div className={'experimentAuthorsUsersSignature'}>
                                 ხელმოწერა:
-                                <img src={signature} alt={'signature'}/>
+
+                                <img src={authorSignature} alt={'signature'}/>
                             </div>
-                        </p>
+                        </div>
                     </div>
                 </Container>
             </Modal.Body>

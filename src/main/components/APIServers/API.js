@@ -1,0 +1,1 @@
+export const API = 'https://retoolapi.dev/vj62Eh/gtumurmanishvilimasterdegreeprojectserverapi';
