@@ -10,6 +10,7 @@
     color: white;
     background: darkslategray url("../../main/assets/labIcon.png") center no-repeat;
     z-index: 1;
+    transition: 0.2s;
 }
 
 .tableGallery {

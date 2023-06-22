@@ -1,8 +1,9 @@
 import './App.css';
 import {ChakraProvider} from '@chakra-ui/react'
 import Main from "./main/components/mainComponents/Main";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {LoginComponent} from "./main/components/loginComponent/LoginComponent";
+import HackingPage from "./main/components/hackingPage/HackingPage";
 
 export default function App() {
     let user = localStorage.getItem('user');
@@ -15,12 +16,13 @@ export default function App() {
         <ChakraProvider>
             <div className="App">
                 {
-                    user === null || user === undefined ?
-                        <LoginComponent/>
-                        :
-                        <Main/>
+                    localStorage.getItem('pcAuthorized') === null ? <HackingPage/>
+                        : user === null || user === undefined ?
+                            <LoginComponent/>
+                            :
+                            <Main/>
                 }
-                </div>
+            </div>
         </ChakraProvider>
     );
 }

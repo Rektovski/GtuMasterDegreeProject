@@ -2,7 +2,7 @@ import Modal from 'react-bootstrap/Modal';
 import React, {useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
 import "../../styles/experimentDetailsStyle.css";
-import {UserAPI} from "../APIServers/UserAPI";
+import {UserAPI} from "../../APIServers/UserAPI";
 import axios from "axios";
 
 export const ExperimentDetails = (props) => {

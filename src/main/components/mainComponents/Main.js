@@ -6,8 +6,7 @@ import MonitorAnswer from "./MonitorAnswer";
 import axios from "axios";
 import {TableGallery} from "./TableGallery";
 import {ModalHistory} from "./ModalHistory";
-import {API} from "../APIServers/API";
-import {UserAPI} from "../APIServers/UserAPI";
+import {API} from "../../APIServers/API";
 
 const defaultForm = {
     t1: 0,
@@ -33,7 +32,8 @@ export default function Main() {
     const [need, setNeed] = useState(0);
     const [date, setDate] = useState('');
     const [historyModalVisible, setHistoryModalVisible] = useState(false);
-    const [tableVisible, setTableVisible] = useState(false);
+    const [isTableVisible, setTableVisible] = useState(false);
+    const [isClosing, setClosing] = useState(false);
 
 
     const handleChange = (e) => {
@@ -76,25 +76,29 @@ export default function Main() {
         setDate(dateNow);
     };
 
-
     const logout = () => {
         localStorage.clear();
         window.location.reload();
     }
 
+    const handleCloseTable = () => {
+        setClosing(true);
+    };
+
+
     useEffect(() => {
         const handleKeyDown = (event) => {
-            if (event.key === "Escape") {
-                setTableVisible(false);
+            if (event.key === 'Escape') {
+                setClosing(true);
             }
         };
 
-        window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener('keydown', handleKeyDown);
 
         return () => {
-            window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [setTableVisible]);
+    }, []);
 
     return (
         <>
@@ -252,10 +256,12 @@ export default function Main() {
                                     <button className={'formButton'} type="submit">კალკულაცია</button>
                                     <button className={'formButtonHistory'} type={"button"} onClick={() => {
                                         setHistoryModalVisible(true);
-                                    }}>ისტორია</button>
+                                    }}>ისტორია
+                                    </button>
                                     <button className={'formButtonTable'} type={"button"} onClick={() => {
                                         setTableVisible(true);
-                                    }}>ცხრილები</button>
+                                    }}>ცხრილები
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -273,9 +279,19 @@ export default function Main() {
 
             <ModalHistory show={historyModalVisible} onHide={() => setHistoryModalVisible(false)} date={date}/>
 
-            {
-                tableVisible && <TableGallery onHide={() => setTableVisible(false)}/>
-            }
+            {isTableVisible && (
+                <div
+                    className={`table-gallery-container ${isClosing ? 'fade-out' : 'fade-in'}`}
+                    onAnimationEnd={() => {
+                        if (isClosing) {
+                            setTableVisible(false);
+                            setClosing(false);
+                        }
+                    }}
+                >
+                    <TableGallery onHide={handleCloseTable} />
+                </div>
+            )}
         </>
     )
 }

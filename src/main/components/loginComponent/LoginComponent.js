@@ -4,7 +4,7 @@ import {Button, Container} from "@chakra-ui/react";
 import {Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import {GiPoliceBadge} from "react-icons/gi";
 import axios from "axios";
-import {UserAPI} from "../APIServers/UserAPI";
+import {UserAPI} from "../../APIServers/UserAPI";
 
 const defaultForm = {
     username: "",

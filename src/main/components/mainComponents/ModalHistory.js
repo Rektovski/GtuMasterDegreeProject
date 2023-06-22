@@ -2,7 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import {ExperimentDetails} from "./ExperimentDetails";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {API} from "../APIServers/API";
+import {API} from "../../APIServers/API";
 import {Button} from "@chakra-ui/react";
 import "../../styles/modalHistoryStyle.css";
 
