@@ -77,7 +77,7 @@ export default function Main() {
     };
 
     const logout = () => {
-        localStorage.clear();
+        localStorage.removeItem('user');
         window.location.reload();
     }
 
