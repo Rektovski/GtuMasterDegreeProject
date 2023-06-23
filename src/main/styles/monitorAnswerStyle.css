@@ -1,6 +1,9 @@
 .errorMessage {
-    color: #7ee808;
+    color: #3056a8;
     font-weight: bold;
+    font-style: oblique;
+    position: relative;
+    top: 240px;
 }
 
 .errorPageBackground {
@@ -11,7 +14,6 @@
 }
 
 .css-typing {
-    background: rgba(128, 128, 128, 0.25);
     padding: 10px;
     font-size: 1.2rem;
 }
@@ -45,7 +47,7 @@
     width: 100%;
     opacity: 0;
     -webkit-animation: type3 5s steps(20, end);
-    animation: type3 1s steps(20, end);
+    animation: type3 1s steps(20, end) ;
     -webkit-animation-delay: 1s;
     animation-delay: 2s;
     -webkit-animation-fill-mode: forwards;

@@ -1,0 +1,83 @@
+.hackingPageContainer {
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    color: lime;
+    font-family: "Courier New", serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.hackingPageScript {
+    flex-grow: 1;
+    white-space: pre-wrap;
+    transition: 0.2s;
+}
+
+.questionContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    text-align: center;
+}
+
+.questionContainerAfterCorrectAnswer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    background: url("../../main/assets/gman.gif") top no-repeat;
+    text-align: center;
+}
+
+.questionNumber {
+    color: lime;
+    padding: 12px;
+    font-size: 7rem;
+}
+
+.hackingQuestionNumber{
+    color: lime;
+    padding: 12px;
+    font-size: 7rem;
+    transition: 0.2s;
+}
+
+.hackingQuestionInput {
+    margin-left: 1rem;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    width: 40px;
+    transition: 0.2s;
+    font-family: Arial, sans-serif; /* Change the font family */
+    font-size: 32px; /* Change the font size */
+    letter-spacing: 10px;
+    color: transparent;
+}
+
+.hackingQuestionInput:hover, .hackingQuestionInput:focus {
+    transition: 0.2s all ease-in-out;
+    width: 300px;
+    color: black;
+}
+
+.hackingQuestionAnswer {
+    color: lime;
+    padding: 12px;
+    font-size: 3rem;
+    transition: 0.2s;
+}

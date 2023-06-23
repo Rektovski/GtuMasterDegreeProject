@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {longString} from "./longString";
+import "../../styles/hackingPageStyle.css";
 
 const HackingPage = () => {
     const [text, setText] = useState('');
@@ -7,8 +8,8 @@ const HackingPage = () => {
     const [questionNumber, setQuestionNumber] = useState(0);
     const [answer, setAnswer] = useState('');
     const [accessGranted, setAccessGranted] = useState(false);
-    const [countdown, setCountdown] = useState(5);
     const hackingContainerRef = useRef(null);
+    const [accessInfo, setAccessInfo] = useState("");
 
     const textDictionary = longString;
 
@@ -31,26 +32,45 @@ const HackingPage = () => {
         return () => {
             clearInterval(interval);
         };
-    }, []);
+    }, [accessGranted]);
 
     const generateRandomNumber = () => {
         // Generate a random number between 10000 and 1000000000
-        return Math.floor(Math.random() * (1000000000 - 10000 + 1)) + 10000;
+        let randomNumber = Math.floor(Math.random() * (1000000000 - 100000000 + 1)) + 10000;
+        if (randomNumber % 2 === 0) ++randomNumber;
+        return randomNumber;
     };
 
     const handleAnswer = (e) => {
         e.preventDefault();
 
         const isPrime = isNumberPrime(questionNumber);
-        const isCorrectAnswer = (isPrime && answer.toLowerCase() === 'yiip') || (!isPrime && answer.toLowerCase() === 'niinp');
+        const isCorrectAnswer =
+            (isPrime && answer.toLowerCase() === '259916') ||  // isPrime == yiip == 25 9 9 16
+            (!isPrime && answer.toLowerCase() === '14991416'); // isNotPrime == niinp == 14 9 9 14 16
 
         if (isCorrectAnswer) {
             setAccessGranted(true);
             localStorage.setItem('pcAuthorized', true);
+            setAccessInfo("***ACCESS GRANTED***");
+            setTimeout(() => {
+                window.location.reload();
+            }, 12000);
         }
-
-        window.location.reload();
+        else {
+            setAccessGranted(false);
+            setAccessInfo("***ACCESS DENIED***");
+            setTimeout(() => {
+                setAccessInfo("");
+                setAnswer("");
+                setQuestionNumber(generateRandomNumber());
+            }, 3000);
+        }
     };
+
+    useEffect(() => {
+
+    }, [accessInfo]);
 
     const isNumberPrime = (num) => {
         if (num <= 1) {
@@ -66,67 +86,48 @@ const HackingPage = () => {
         return true;
     };
 
-    const handleReset = () => {
-        setShowQuestion(false);
-        setText('');
-        setAccessGranted(false);
-        setCountdown(5);
-
-        // Scroll to the bottom of the page after resetting
-        if (hackingContainerRef.current) {
-            hackingContainerRef.current.scrollTop = hackingContainerRef.current.scrollHeight;
-        }
-    };
-
     return (
         <div>
             <div
                 ref={hackingContainerRef}
-                style={{
-                    width: '100vw',
-                    height: '100vh',
-                    background: 'black',
-                    color: 'lime',
-                    fontFamily: 'Courier New',
-                    fontSize: '14px',
-                    lineHeight: '1.5',
-                    padding: '20px',
-                    overflow: 'hidden', // Hide the overflow to prevent browser scroll
-                    display: 'flex',
-                    flexDirection: 'column-reverse', // Reverse the flex direction to start writing from bottom to top
-                }}
+                className={'hackingPageContainer'}
             >
-                <div style={{ flexGrow: 1, whiteSpace: 'pre-wrap' }}>{text}</div>
-
-                {accessGranted && (
-                    <div style={{ fontSize: '40px', marginTop: '2rem' }}>
-                        *** ACCESS GRANTED ***
-                        <button style={{ marginLeft: '1rem' }} onClick={handleReset}>
-                            Reset
-                        </button>
-                    </div>
-                )}
-                {showQuestion && !accessGranted && countdown === 0 && (
-                    <div style={{ fontSize: '40px', marginTop: '2rem' }}>
-                        *** ACCESS DENIED ***
-                        <button style={{ marginLeft: '1rem' }} onClick={handleReset}>
-                            Reset
-                        </button>
-                    </div>
-                )}
+                {
+                    !accessGranted && <div className={'hackingPageScript'}>{text}</div>
+                }
 
             </div>
             {showQuestion && (
-                <div style={{ marginTop: '2rem' }}>
-                    {questionNumber}
-                    <form onSubmit={handleAnswer}>
-                        <input
-                            type="password"
-                            value={answer}
-                            onChange={(e) => setAnswer(e.target.value)}
-                            style={{ marginLeft: '1rem' }}
-                        />
-                    </form>
+                <div className={`${accessGranted ? "questionContainerAfterCorrectAnswer" : "questionContainer"}`}>
+                    <div>
+                        {
+                            !accessGranted &&
+                            <>
+                                <div className={'hackingQuestionNumber'}>
+                                    {accessInfo === "" && questionNumber}
+                                </div>
+                                {
+                                    accessInfo === "" &&
+                                    <form onSubmit={handleAnswer}>
+                                        <input
+                                            type="password"
+                                            value={answer}
+                                            onChange={(e) => setAnswer(e.target.value)}
+                                            className={'hackingQuestionInput'}
+                                        />
+                                    </form>
+                                }
+                            </>
+                        }
+                        <div className={'hackingQuestionAnswer'}>
+                            {
+                                accessGranted ? accessInfo :
+                                    <>
+                                    {accessInfo === "***ACCESS DENIED***" && accessInfo}
+                                    </>
+                            }
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

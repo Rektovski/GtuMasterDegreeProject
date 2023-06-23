@@ -150,21 +150,20 @@
 .formButtonTable:hover {
     transition: 0.2s all ease-in-out;
     border-radius: 20px;
-    background: black;
+    background: white;
     color: white;
 }
 
 .pcMonitorContainer {
-    background-image: url("../../main/assets/pcMonitorImage.svg");
+    background: white;
     opacity: 90%;
-    height: 100%; /* You must set a specified height */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
     z-index: 1;
     position: relative;
-    top: 40px;
+    top: 20%;
     transform: rotateX(15deg) rotateY(30deg);
+    height: 440px;
+    box-shadow: 0 0 80px 20px white;
 }
 
 .pcMonitorText {
