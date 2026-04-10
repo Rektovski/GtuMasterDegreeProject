@@ -32,6 +32,7 @@ const HackingPage = () => {
         return () => {
             clearInterval(interval);
         };
+        // eslint-disable-next-line
     }, [accessGranted]);
 
     const generateRandomNumber = () => {

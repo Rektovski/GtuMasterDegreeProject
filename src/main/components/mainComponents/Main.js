@@ -1,29 +1,19 @@
-import {useEffect, useState} from "react";
 import "../../styles/mainStyle.css";
-import {isDriverGuilty, driverHas, driverNeed} from "../helperFunctions/calculationFunctions";
-import {dateNow} from "../helperFunctions/dateFunction";
+import { useState, useEffect } from "react";
+import { isDriverGuilty, driverHas, driverNeed } from "../helperFunctions/calculationFunctions";
+import { dateNow } from "../helperFunctions/dateFunction";
 import MonitorAnswer from "./MonitorAnswer";
 import axios from "axios";
-import {TableGallery} from "./TableGallery";
-import {ModalHistory} from "./ModalHistory";
-import {API} from "../../APIServers/API";
+import { TableGallery } from "./TableGallery";
+import { ModalHistory } from "./ModalHistory";
+import { API } from "../../APIServers/API";
 
 const defaultForm = {
-    t1: 0,
-    t2: 0,
-    t3: 0,
-    carVelocity: 0,
-    humanVelocity: 0,
-    humanLength: 0,
-    J: 0,
-    driverFullName: "",
-    pedestrianFullName: "",
-    date: "",
-    time: "",
-    has: null,
-    need: null,
-    guilty: null,
-}
+    t1: 0, t2: 0, t3: 0,
+    carVelocity: 0, humanVelocity: 0, humanLength: 0, J: 0,
+    driverFullName: "", pedestrianFullName: "",
+    date: "", time: "", has: null, need: null, guilty: null,
+};
 
 export default function Main() {
     const [form, setForm] = useState(defaultForm);
@@ -34,264 +24,148 @@ export default function Main() {
     const [historyModalVisible, setHistoryModalVisible] = useState(false);
     const [isTableVisible, setTableVisible] = useState(false);
     const [isClosing, setClosing] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
+    const [isCalculating, setIsCalculating] = useState(false);
 
+    // Key used to force-restart monitor animations
+    const [renderKey, setRenderKey] = useState(0);
+
+    useEffect(() => {
+        setIsVisible(true);
+    }, []);
 
     const handleChange = (e) => {
-        setForm((prevState) => ({
-                ...prevState, [e.target.name]: e.target.value
-            }
-        ));
-    }
+        setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
 
     const calculateInformationAndSendItToAPI = async (e) => {
         e.preventDefault();
-        form.date = dateNow('date');
-        form.time = dateNow('time');
+        if (isCalculating) return;
 
-        // true or false
-        setResult(isDriverGuilty(form));
-        form.guilty = isDriverGuilty(form);
+        setIsCalculating(true);
+        const updatedForm = { ...form };
+        updatedForm.date = dateNow('date');
+        updatedForm.time = dateNow('time');
+        updatedForm.guilty = isDriverGuilty(form);
+        updatedForm.need = driverNeed(form);
+        updatedForm.has = driverHas(form);
+        updatedForm.user = localStorage.getItem('user');
+        updatedForm.userId = localStorage.getItem('userId');
 
-        // Detailed info about needed and had distances.
-        // For localUse
-        setNeed(driverNeed(form));
-        setHas(driverHas(form));
+        setResult(updatedForm.guilty);
+        setNeed(updatedForm.need);
+        setHas(updatedForm.has);
 
-        // For API
-        form.need = driverNeed(form);
-        form.has = driverHas(form);
+        // Increment key to trigger re-render and CSS animation reset
+        setRenderKey(prev => prev + 1);
 
-        form["user"] = localStorage.getItem('user');
-        form["userId"] = localStorage.getItem('userId');
-
-        // Sending data to database (API)
-        await axios
-            .post(API, form)
-            .then(r => console.log(r))
-            .catch(e => console.error("Error: " + e));
-
-        // Resetting inputs in the form after gaining results.
-        setForm(defaultForm);
-
+        try {
+            await axios.post(API, updatedForm);
+        } catch (err) {
+            console.error("API Error:", err);
+        } finally {
+            setTimeout(() => {
+                setIsCalculating(false);
+                setForm(defaultForm);
+            }, 800);
+        }
         setDate(dateNow);
     };
 
     const logout = () => {
         localStorage.removeItem('user');
         window.location.reload();
-    }
-
-    const handleCloseTable = () => {
-        setClosing(true);
     };
 
-
     useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'Escape') {
-                setClosing(true);
-            }
-        };
 
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
+    }, [isClosing])
 
     return (
-        <>
-            <div className={'backgroundImage'}>
-                <div className={'logoutBtnSpace'}>
-                    <button className={'logoutBtn'} onClick={logout}>გამოსვლა</button>
+        <div className={`main-wrapper ${isVisible ? 'page-fade-in' : ''}`}>
+            <header className="dashboard-header">
+                <div className="brand">
+                    <span className="brand-accent">E</span> LABORATORY
                 </div>
-                <div className={'board'}>
-                    <div className={'boardTitle'}>საექსპერიმენტო ლაბორატორია</div>
-                    <div className={'boardDescription'}>გზაზე გადამსვლელ ქვეითს დაეჯახა მანქანა. საჭიროა დადგინდეს
-                        ჰქონდა თუ არა მძღოლს საკმარისი დისტანცია გასაჩერებლად!
-                    </div>
-                    <div className={'boardBody'}>
-                        <div className={'boardLeft'}>
-                            <form className={'boardLeftForm'} onSubmit={calculateInformationAndSendItToAPI}>
-                                <label className={'formLabel'} htmlFor={"t1"}>
-                                    რეაქციის დრო:
+                <button className="logout-btn" onClick={logout}>გამოსვლა</button>
+            </header>
+
+            <main className="dashboard-content">
+                <section className="input-panel">
+                    <h2 className="panel-title">Forensic Parameters</h2>
+                    <form className="analysis-form" onSubmit={calculateInformationAndSendItToAPI}>
+                        <div className="input-grid">
+                            {[
+                                { label: "რეაქციის დრო (წმ)", name: "t1" },
+                                { label: "მუხრუჭის დაყოვნება (წმ)", name: "t2" },
+                                { label: "მუხრუჭის ეფექტ. (წმ)", name: "t3" },
+                                { label: "მანქანის სიჩქარე (მ/წმ)", name: "carVelocity" },
+                                { label: "ქვეითის სიჩქარე (მ/წმ)", name: "humanVelocity" },
+                                { label: "ქვეითის მანძილი (მ)", name: "humanLength" },
+                                { label: "აჩქარება (მ/წმ²)", name: "J" }
+                            ].map((field, index) => (
+                                <div
+                                    className="field staggered-input"
+                                    key={field.name}
+                                    style={{ animationDelay: `${index * 0.05}s` }}
+                                >
+                                    <label>{field.label}</label>
                                     <input
-                                        className={'formInput'}
                                         type="number"
-                                        name="t1"
-                                        placeholder={'წმ'}
-                                        value={form.t1 ? form.t1 : ""}
+                                        name={field.name}
+                                        step="0.01"
+                                        value={form[field.name] || ""}
                                         onChange={handleChange}
-                                        required={true}
-                                        min={0.01}
-                                        max={3}
-                                        step={0.01}
+                                        required
+                                        disabled={isCalculating}
                                     />
-                                </label>
-                                <br/>
-                                <label className={'formLabel'} htmlFor={"t2"}>
-                                    მუხრუჭის დაყოვნება:
-                                    <input
-                                        className={'formInput'}
-                                        type="number"
-                                        name="t2"
-                                        placeholder={'წმ'}
-                                        value={form.t2 ? form.t2 : ""}
-                                        onChange={handleChange}
-                                        required={true}
-                                        min={0.01}
-                                        max={2}
-                                        step={0.01}
-                                    />
-                                </label>
-                                <br/>
-                                <label className={'formLabel'} htmlFor={"t3"}>
-                                    მუხრუჭის მაქს.ეფექტ. საჭირო დრო:
-                                    <input
-                                        className={'formInput'}
-                                        type="number"
-                                        name="t3"
-                                        placeholder={'წმ'}
-                                        value={form.t3 ? form.t3 : ""}
-                                        onChange={handleChange}
-                                        required={true}
-                                        min={0.01}
-                                        max={2}
-                                        step={0.01}
-                                    />
-                                </label>
-                                <br/>
-                                <label className={'formLabel'} htmlFor={"carVelocity"}>
-                                    მანქანის სიჩქარე:
-                                    <input
-                                        className={'formInput'}
-                                        type="number"
-                                        name="carVelocity"
-                                        placeholder={'მ/წმ'}
-                                        value={form.carVelocity ? form.carVelocity : ""}
-                                        onChange={handleChange}
-                                        required={true}
-                                        min={0.01}
-                                        max={500}
-                                        step={0.01}
-                                    />
-                                </label>
-                                <br/>
-                                <label className={'formLabel'} htmlFor={'humanVelocity'}>
-                                    ქვეითის სიჩქარე:
-                                    <input
-                                        className={'formInput'}
-                                        type="number"
-                                        name="humanVelocity"
-                                        placeholder={'მ/წმ'}
-                                        value={form.humanVelocity ? form.humanVelocity : ""}
-                                        onChange={handleChange}
-                                        required={true}
-                                        min={0.01}
-                                        max={138.88}
-                                        step={0.01}
-                                    />
-                                </label>
-                                <br/>
-                                <label className={'formLabel'} htmlFor={'humanLength'}>
-                                    ქვეითის მიერ გავლილი მანძილი:
-                                    <input
-                                        className={'formInput'}
-                                        type="number"
-                                        name="humanLength"
-                                        placeholder={'მ'}
-                                        value={form.humanLength ? form.humanLength : ""}
-                                        onChange={handleChange}
-                                        required={true}
-                                        min={0.01}
-                                        max={15}
-                                        step={0.01}
-                                    />
-                                </label>
-                                <br/>
-                                <label className={'formLabel'} htmlFor={'J'}>
-                                    მაქსიმალური ნიშნიანი აჩქარება:
-                                    <input
-                                        className={'formInput'}
-                                        type="number"
-                                        name="J"
-                                        placeholder={'მ/წმ^2'}
-                                        value={form.J ? form.J : ""}
-                                        onChange={handleChange}
-                                        required={true}
-                                        min={0.01}
-                                        max={10}
-                                        step={0.01}
-                                    />
-                                </label>
-                                <br/>
-                                <label className={'formLabel'} htmlFor={'driverFullName'}>
-                                    მძღოლის სრული სახელი:
-                                    <input
-                                        className={'formInput'}
-                                        type="text"
-                                        name="driverFullName"
-                                        placeholder={'გვარი, სახელი'}
-                                        value={form.driverFullName ? form.driverFullName : ""}
-                                        onChange={handleChange}
-                                        required={true}
-                                    />
-                                </label>
-                                <br/>
-                                <label className={'formLabel'} htmlFor={'pedestrianFullName'}>
-                                    ქვეითის სრული სახელი:
-                                    <input
-                                        className={'formInput'}
-                                        type="text"
-                                        name="pedestrianFullName"
-                                        placeholder={'გვარი სახელი'}
-                                        value={form.pedestrianFullName ? form.pedestrianFullName : ""}
-                                        onChange={handleChange}
-                                        required={true}
-                                    />
-                                </label>
-                                <br/>
-                                <div className={'formButtonSpace'}>
-                                    <button className={'formButton'} type="submit">კალკულაცია</button>
-                                    <button className={'formButtonHistory'} type={"button"} onClick={() => {
-                                        setHistoryModalVisible(true);
-                                    }}>ისტორია
-                                    </button>
-                                    <button className={'formButtonTable'} type={"button"} onClick={() => {
-                                        setTableVisible(true);
-                                    }}>ცხრილები
-                                    </button>
                                 </div>
-                            </form>
+                            ))}
                         </div>
 
-                        <div className={'boardRight'}>
-                            <div className="pcMonitorContainer">
-                                <div className={'pcMonitorText '}>
-                                    <MonitorAnswer result={result} has={has} need={need} date={date}/>
-                                </div>
+                        <div className="text-fields-section">
+                            <div className="field-full staggered-input" style={{ animationDelay: '0.4s' }}>
+                                <label>მძღოლის სრული სახელი</label>
+                                <input type="text" name="driverFullName" placeholder="გვარი, სახელი" value={form.driverFullName} onChange={handleChange} required disabled={isCalculating} />
+                            </div>
+                            <div className="field-full staggered-input" style={{ animationDelay: '0.5s' }}>
+                                <label>ქვეითის სრული სახელი</label>
+                                <input type="text" name="pedestrianFullName" placeholder="გვარი, სახელი" value={form.pedestrianFullName} onChange={handleChange} required disabled={isCalculating} />
                             </div>
                         </div>
+
+                        <div className="button-group">
+                            <button className={`btn-primary ${isCalculating ? 'btn-loading' : ''}`} type="submit" disabled={isCalculating}>
+                                {isCalculating ? "მუშავდება..." : "კალკულაცია"}
+                            </button>
+                            <button className="btn-secondary" type="button" onClick={() => setHistoryModalVisible(true)}>ისტორია</button>
+                            <button className="btn-secondary" type="button" onClick={() => setTableVisible(true)}>ცხრილები</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section className="display-panel">
+                    {/* The key={renderKey} forces the entire monitor to remount and replay animations */}
+                    <div className="hologram-monitor" key={renderKey}>
+                        <div className="monitor-grid-overlay"></div>
+                        <div className="monitor-scanline"></div>
+                        <div className="monitor-corner top-left"></div>
+                        <div className="monitor-corner top-right"></div>
+                        <div className="monitor-corner bottom-left"></div>
+                        <div className="monitor-corner bottom-right"></div>
+                        <div className="monitor-content monitor-entrance-animation">
+                            <MonitorAnswer result={result} has={has} need={need} date={date} />
+                        </div>
                     </div>
-                </div>
-            </div>
+                </section>
+            </main>
 
-            <ModalHistory show={historyModalVisible} onHide={() => setHistoryModalVisible(false)} date={date}/>
-
+            <ModalHistory show={historyModalVisible} onHide={() => setHistoryModalVisible(false)} date={date} />
             {isTableVisible && (
-                <div
-                    className={`table-gallery-container ${isClosing ? 'fade-out' : 'fade-in'}`}
-                    onAnimationEnd={() => {
-                        if (isClosing) {
-                            setTableVisible(false);
-                            setClosing(false);
-                        }
-                    }}
-                >
-                    <TableGallery onHide={handleCloseTable} />
+                <div className={`table-gallery-overlay ${isClosing ? 'fade-out' : 'fade-in'}`}>
+                    <TableGallery onHide={() => setClosing(true)} />
                 </div>
             )}
-        </>
-    )
+        </div>
+    );
 }

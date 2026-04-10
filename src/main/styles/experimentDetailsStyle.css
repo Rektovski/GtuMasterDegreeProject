@@ -1,69 +1,147 @@
-.experimentDetailsModal {
-    z-index: 10000;
-}
-
-.experimentId {
-    border: 3px dotted black;
-    padding: 4px;
-    border-radius: 10px 0 10px 10px;
-}
-
-.experimentCalendar, .experimentTime {
-    text-decoration: underline;
-    font-style: italic;
+.protocolOverlay {
+    position: fixed;
+    inset: 0;
+    background: #020617;
+    z-index: 11000;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    padding-bottom: 50px;
 }
 
-.experimentAuthorUser {
-    text-align: center;
+.protocolToolbar {
+    width: 100%;
+    background: #0f172a;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1e293b;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
-.experimentListItemTitle {
-    padding: 10px;
+.protocolInfo { display: flex; align-items: center; gap: 10px; color: #94a3b8; }
+
+.protocolCloseBtn {
+    background: none; border: none; color: #fff; cursor: pointer;
 }
 
-.experimentListItem {
-    border: 1px solid lightgray;
-    padding: 5px;
-    border-radius: 10px 0 10px 10px;
+/* Document Styling */
+.protocolPaper {
+    width: 800px;
+    background: #fff;
+    color: #000;
+    margin-top: 40px;
+    padding: 60px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    min-height: 1100px;
+    font-family: 'Times New Roman', serif; /* Classic document feel */
+}
+
+.protocolHeader {
+    border-bottom: 2px solid #000;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.protocolStamp {
+    position: absolute;
+    top: 0; right: 0;
+    border: 3px solid #000;
+    padding: 5px 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transform: rotate(5deg);
+}
+
+.protocolMainTitle { font-size: 1.8rem; margin: 0; }
+.protocolMeta { margin-top: 15px; font-size: 0.9rem; line-height: 1.4; }
+
+.protocolSection { margin-bottom: 30px; }
+.sectionTitle {
+    background: #f1f5f9;
+    padding: 5px 10px;
+    font-size: 1.1rem;
+    border-left: 5px solid #000;
+    margin-bottom: 15px;
+}
+
+.protocolDataGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.dataRow {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 5px 0;
     display: flex;
     justify-content: space-between;
 }
 
-.experimentResultsSpace {
-    display: flex;
-    justify-content: flex-end;
+.resultsBox {
+    border: 2px dashed #000;
+    padding: 15px;
+    background: #f8fafc;
 }
 
-.experimentResultsTitle {
-    padding: 10px;
-}
-
-.experimentResults {
-    margin: 50px 0;
-    display: inline-block;
-    border: 1px solid black;
-    padding: 10px;
-}
-
-.experimentConclusionSpace {
-    border: 1px solid black;
-}
-
-.experimentConclusionTitle {
-    text-align: center;
-    padding: 20px;
-}
-
-.experimentConclusion {
-    text-indent: 4em;
+.conclusionText {
     text-align: justify;
-    margin: 50px 100px -20px 100px;
+    line-height: 1.6;
+    text-indent: 40px;
 }
 
-.experimentAuthorsUsersSignature {
+.protocolSignatureSection {
+    margin-top: 60px;
     display: flex;
     justify-content: flex-end;
+}
+
+.signatureLine {
+    border-bottom: 1px solid #000;
+    width: 300px;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding-bottom: 5px;
+}
+
+.signatureLine img { height: 60px; max-width: 200px; }
+
+.toolbarActions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.downloadBtn {
+    background: var(--accent-cyan, #00d2ff);
+    color: #020617;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.downloadBtn:hover {
+    background: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+}
+
+/* Darken for better UI experience when viewing */
+@media print {
+    .protocolOverlay { background: #fff; padding: 0; }
+    .protocolToolbar { display: none; }
+    .protocolPaper { margin: 0; box-shadow: none; width: 100%; }
 }

@@ -1,22 +1,147 @@
-.ModalHistoryHeader {
-    font-size: 3rem;
+.historyOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.98); /* Near total black */
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 20px;
+    animation: modalFadeIn 0.3s ease-out;
 }
 
-.ModalHistoryListItem {
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid gray;
-    border-radius: 10px;
-    transition: 0.2s;
-    background: white;
-    color: black
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(1.05); }
+    to { opacity: 1; transform: scale(1); }
 }
 
-.ModalHistoryListItem:hover {
-    transition: 0.2s all ease-in-out;
-    background: #5fc5aa;
-    color: white;
-    font-size: 1.2rem;
+.historyContainer {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    background: #0f172a;
+    border: 1px solid rgba(0, 210, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Header */
+.historyHeader {
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.historyTitle {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--accent-cyan, #00d2ff);
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.historyCloseX {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+.historyCloseX:hover { color: #f43f5e; }
+
+/* Body & List */
+.historyBody {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.historyListGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.historyItemCard {
+    background: #020617;
+    border: 1px solid #1e293b;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.historyItemCard:hover {
+    border-color: #00d2ff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 210, 255, 0.1);
+}
+
+.itemBadge {
+    font-family: monospace;
+    color: #fffc00; /* Gold badge for ID */
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.infoRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+}
+
+.infoLabel { color: #64748b; }
+.infoValue { color: #f8fafc; font-weight: 600; }
+
+.itemMeta {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 10px;
+    font-size: 0.75rem;
+    color: #475569;
+    text-align: right;
+}
+
+/* Footer */
+.historyFooter {
+    padding: 20px 30px;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.historyCloseBtn {
+    background: transparent;
+    border: 1px solid #334155;
+    color: #fff;
+    padding: 10px 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.historyCloseBtn:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* Scrollbar Styling */
+.historyBody::-webkit-scrollbar { width: 8px; }
+.historyBody::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+.noData {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #475569;
+    padding-top: 50px;
+    font-style: italic;
 }

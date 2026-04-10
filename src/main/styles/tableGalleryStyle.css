@@ -1,133 +1,219 @@
-.tableGallerySpace {
-    height: 100vh;
-    width: 100vw;
-    left: 0;
-    top: 0;
-    position: absolute;
-    display: grid;
-    place-items: center;
-    justify-content: center;
-    color: white;
-    background: darkslategray url("../../main/assets/labIcon.png") center no-repeat;
-    z-index: 1;
-    transition: 0.2s;
-}
-
-.tableGallery {
-    height: 90vh;
-    width: 90vw;
-    background: rgba(0, 0, 0, 0.82);
+.tableGalleryOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
+.tableGalleryOverlay.active {
+    opacity: 1;
+}
+
+.tableGallerySpace {
+    width: 95vw;
+    height: 90vh;
+    background: #0f172a;
+    border: 1px solid rgba(0, 210, 255, 0.2);
+    border-radius: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Close Button */
 .tableCloseBtn {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 120px;
-    height: 38px;
-    background: white;
-    color: black;
-    transition: 0.2s;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: 1px solid #f43f5e;
+    color: #f43f5e;
+    padding: 8px 16px;
+    border-radius: 8px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 10px;
-    border-radius: 10px;
+    gap: 8px;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.2s;
 }
 
 .tableCloseBtn:hover {
-    transition: 0.2s all ease-in-out;
-    background: black;
+    background: #f43f5e;
     color: white;
-    cursor: pointer;
-    border-radius: 20px;
 }
 
-.gallery {
-    width: 10%;
-    height: 100%;
-    background: rgba(128, 128, 128, 0.18);
-}
-
-.galleryItem {
-    width: 100%;
-    height: 50%;
-    transition: 0.2s;
+.tableGalleryMain {
     display: flex;
+    height: 100%;
+}
+
+/* Side Nav */
+.gallerySideNav {
+    width: 100px;
+    background: rgba(0, 0, 0, 0.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 40px;
+}
+
+.navItem {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    overflow: hidden;
-}
-
-.galleryItem:hover {
-    transition: 0.2s all ease-in-out;
-    color: black;
+    gap: 8px;
+    padding: 15px 5px;
     cursor: pointer;
-    background: white;
+    opacity: 0.5;
+    transition: 0.3s;
 }
 
-.galleryItemIcon {
+.navItem.active, .navItem:hover {
+    opacity: 1;
+    background: rgba(0, 210, 255, 0.05);
+    border-right: 2px solid #00d2ff;
 }
 
-.album {
-    width: 90%;
+.navItem img {
+    width: 32px;
+    height: 32px;
+    filter: invert(1);
+}
+
+.navLabel {
+    font-size: 0.65rem;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/* Album Content */
+.albumContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+}
+
+.albumHeader {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .albumTitle {
-    text-align: center;
+    font-size: 1.5rem;
+    color: #00d2ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
 }
 
-.albumBody {
-    display: flex;
-    align-items: center;
-    height: 650px;
+.albumSubtitle {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-top: 5px;
 }
 
-.albumBodyArrow {
-    transition: 0.2s;
-    border-radius: 100%;
-    margin: 0 20px;
-}
-
-.albumBodyArrow:hover {
-    transition: 0.2s all ease-in-out;
-    box-shadow: 0 0 10px 10px darkslategray;
-    cursor: pointer;
-}
-
-.chosenImageSpace {
-    width: 1000px;
-    height: 600px;
-    margin: 30px auto;
-}
-
-.chosenImage {
-    height: 100%;
-    width: 100%;
-}
-
-.albumImagesSpace {
+/* Viewer Area */
+.albumViewer {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    height: 120px;
-    width: 100%;
+    gap: 30px;
 }
 
-.albumImages {
-    width: 120px;
-    height: 100px;
-    margin: 0 10px 0 10px;
+.imageDisplay {
+    width: 800px;
+    height: 500px;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mainImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.1);
+}
+
+.displayCorner {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border: 2px solid #00d2ff;
+}
+
+.tl { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.tr { top: -2px; right: -2px; border-left: 0; border-bottom: 0; }
+.bl { bottom: -2px; left: -2px; border-right: 0; border-top: 0; }
+.br { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+
+.arrowBtn {
+    color: #00d2ff;
+    cursor: pointer;
+    font-size: 60px;
     transition: 0.2s;
 }
 
-.albumImage {
-    width: 100%;
-    height: 100%;
+.arrowBtn:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px #00d2ff);
 }
 
-.albumImages:hover {
-    transition: 0.2s all ease-in-out;
-    box-shadow: 0 0 10px 10px white;
+/* Thumbnails */
+.thumbnailStrip {
+    height: 120px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    overflow-x: auto;
+    padding: 10px;
 }
+
+.thumbWrapper {
+    width: 100px;
+    height: 70px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #000;
+    flex-shrink: 0;
+}
+
+.thumbWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+}
+
+.thumbWrapper:hover img, .thumbWrapper.selected img {
+    opacity: 1;
+}
+
+.thumbWrapper.selected {
+    border-color: #00d2ff;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+}
+
+/* Custom Scrollbar for thumbnails */
+.thumbnailStrip::-webkit-scrollbar { height: 4px; }
+.thumbnailStrip::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }

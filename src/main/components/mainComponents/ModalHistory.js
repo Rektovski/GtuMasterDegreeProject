@@ -1,66 +1,91 @@
-import Modal from "react-bootstrap/Modal";
-import {ExperimentDetails} from "./ExperimentDetails";
-import React, {useEffect, useState} from "react";
-import axios from "axios";
-import {API} from "../../APIServers/API";
-import {Button} from "@chakra-ui/react";
 import "../../styles/modalHistoryStyle.css";
+import { ExperimentDetails } from "./ExperimentDetails";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { API } from "../../APIServers/API";
+import { VscClose, VscHistory } from "react-icons/vsc";
 
 export const ModalHistory = (props) => {
     const [experimentDetailModalVisible, setExperimentDetailModalVisible] = useState(false);
     const [item, setItem] = useState({});
     const [dataList, setDataList] = useState([]);
 
-
     const getHistoryDataFromServerAPI = async () => {
-        await axios.get(API)
-            .then(response => {
-                let data = response.data.sort((a, b) => b.id - a.id);
-                setDataList(data);
-            })
-            .catch(error => console.error("Error: " + error));
+        try {
+            const response = await axios.get(API);
+            // Sorting by ID descending
+            const sortedData = response.data.sort((a, b) => b.id - a.id);
+            setDataList(sortedData);
+        } catch (error) {
+            console.error("Archive Access Denied: " + error);
+        }
     }
 
     useEffect(() => {
-        getHistoryDataFromServerAPI().then(r=>console.log(r)).catch(e=>console.error("Error: ", e));
-    }, [props.date]);
+        if (props.show) {
+            getHistoryDataFromServerAPI();
+        }
+    }, [props.show, props.date]);
+
+    if (!props.show) return null;
 
     return (
-        <>
-            <Modal
-                {...props}
-                fullscreen={true}
-                aria-labelledby="example-modal-sizes-title-lg"
-                className={'experimentDetailsModal'}
-            >
-                <Modal.Header className={'ModalHistoryHeader'} closeButton>
-                    კვლევათა ნუსხა
-                </Modal.Header>
-                <Modal.Body>
-                    {dataList.map((item, id) => (
-                        <div key={id} className={'ModalHistoryListItem'} onClick={() => {
-                            setItem(item);
-                            setExperimentDetailModalVisible(true);
-                        }}>
-                            {`კვლევა #${item.id}. მძღოლი - ${item.driverFullName}. ქვეითი - ${item.pedestrianFullName}`}
-                        </div>
-                    ))}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button colorScheme='blue' mr={3} onClick={props.onHide}>
-                        დახურვა
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+        <div className="historyOverlay">
+            <div className="historyContainer">
+                <header className="historyHeader">
+                    <div className="historyTitle">
+                        <VscHistory size={28} className="historyIcon" />
+                        <span>კვლევების არქივი</span>
+                    </div>
+                    <button className="historyCloseX" onClick={props.onHide}>
+                        <VscClose size={30} />
+                    </button>
+                </header>
 
-            <ExperimentDetails show={experimentDetailModalVisible} onHide={() => { setExperimentDetailModalVisible(false); }} data={item} />
-        </>
-    )
+                <div className="historyBody">
+                    <div className="historyListGrid">
+                        {dataList.length > 0 ? (
+                            dataList.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="historyItemCard"
+                                    onClick={() => {
+                                        setItem(item);
+                                        setExperimentDetailModalVisible(true);
+                                    }}
+                                >
+                                    <div className="itemBadge">#{item.id}</div>
+                                    <div className="itemInfo">
+                                        <div className="infoRow">
+                                            <span className="infoLabel">მძღოლი:</span>
+                                            <span className="infoValue">{item.driverFullName}</span>
+                                        </div>
+                                        <div className="infoRow">
+                                            <span className="infoLabel">ქვეითი:</span>
+                                            <span className="infoValue">{item.pedestrianFullName}</span>
+                                        </div>
+                                    </div>
+                                    <div className="itemMeta">
+                                        {item.date} | {item.time}
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="noData">არქივი ცარიელია...</div>
+                        )}
+                    </div>
+                </div>
+
+                <footer className="historyFooter">
+                    <button className="historyCloseBtn" onClick={props.onHide}>დახურვა</button>
+                </footer>
+            </div>
+
+            <ExperimentDetails
+                show={experimentDetailModalVisible}
+                onHide={() => setExperimentDetailModalVisible(false)}
+                data={item}
+            />
+        </div>
+    );
 }
-
-
-
-
-
-
-

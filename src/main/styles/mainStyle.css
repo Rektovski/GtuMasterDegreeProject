@@ -1,220 +1,192 @@
-.backgroundImage {
-    height: 100vh;
-    width: 100vw;
-    left: 0;
-    top: 0;
-    position: absolute;
+:root {
+    --bg-dark: #020617;
+    --bg-panel: #0f172a;
+    --accent-cyan: #00d2ff;
+    --accent-gold: #fffc00;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #1e293b;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flicker {
+    0% { opacity: 0.98; }
+    5% { opacity: 0.95; }
+    10% { opacity: 0.99; }
+    100% { opacity: 1; }
+}
+
+.main-wrapper {
+    background: var(--bg-dark);
+    min-height: 100vh;
+    padding: 20px 40px;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 30px;
+}
+
+.brand { font-size: 1.5rem; letter-spacing: 4px; font-weight: 300; }
+.brand-accent { color: var(--accent-gold); font-weight: 800; }
+
+.dashboard-content {
     display: grid;
-    place-items: center;
-    justify-content: center;
-    color: white;
-    background: #2F4F4FD6 url("../../main/assets/labIcon.png") center no-repeat;
-    transition: 0.2s;
+    grid-template-columns: 480px 1fr;
+    gap: 40px;
 }
 
-.logoutBtnSpace {
+.input-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.panel-title {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    border-left: 4px solid var(--accent-cyan);
+    padding-left: 15px;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.staggered-input { opacity: 0; animation: fadeInUp 0.4s ease-out forwards; }
+
+.field label, .field-full label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.field input, .field-full input {
+    width: 100%;
+    background: #000;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 10px;
+    color: var(--accent-cyan);
+    font-weight: 600;
+}
+
+.field-full input { color: #fff; }
+
+.text-fields-section { margin-top: 25px; display: flex; flex-direction: column; gap: 15px; }
+
+.button-group { margin-top: 30px; display: flex; gap: 10px; }
+
+.btn-primary {
+    flex: 2;
+    background: var(--accent-cyan);
+    color: #020617;
+    border: none;
+    border-radius: 6px;
+    padding: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.btn-loading { background: #1e293b !important; color: var(--accent-cyan) !important; cursor: not-allowed; }
+
+.btn-secondary {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* MONITOR DESIGN */
+.hologram-monitor {
+    background: #020617;
+    border: 1px solid rgba(0, 210, 255, 0.15);
+    height: 100%;
+    min-height: 550px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    animation: flicker 0.2s infinite;
+}
+
+@keyframes monitorDataReveal {
+    0% { opacity: 0; transform: scale(0.98) translateY(10px); filter: blur(5px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+.monitor-entrance-animation {
+    animation: monitorDataReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Updated Flicker - subtle power-on effect */
+@keyframes monitorPowerOn {
+    0% { opacity: 0; }
+    10% { opacity: 0.5; }
+    15% { opacity: 0.2; }
+    25% { opacity: 1; }
+}
+
+.hologram-monitor {
+    background: #020617;
+    border: 1px solid rgba(0, 210, 255, 0.25);
+    height: 100%;
+    min-height: 550px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    /* Plays once on remount (triggered by the React key change) */
+    animation: monitorPowerOn 0.4s ease-out forwards;
+}
+
+/* Persistent background flicker while active */
+.monitor-grid-overlay::after {
+    content: "";
     position: absolute;
-    top: 20px;
-    left: calc(100% - 120px);
-    margin-left: auto;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 210, 255, 0.02);
+    animation: flicker 0.15s infinite;
+    pointer-events: none;
 }
 
-.logoutBtn {
-    width: 100px;
-    height: 40px;
-    background: white;
-    color: black;
-    transition: 0.2s;
-    border-radius: 10px;
+@keyframes flicker {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.9; }
 }
 
-.logoutBtn:hover {
-    transition: 0.2s all ease-in-out;
-    background: black;
-    color: white;
+.monitor-corner { position: absolute; width: 15px; height: 15px; border: 2px solid var(--accent-cyan); }
+.top-left { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+.top-right { top: 10px; right: 10px; border-left: 0; border-bottom: 0; }
+.bottom-left { bottom: 10px; left: 10px; border-right: 0; border-top: 0; }
+.bottom-right { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+
+.monitor-scanline {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
 }
 
-.board {
-    background-color: rgba(0, 0, 0, 0.66);
-    height: 90vh;
-    width: 90vw;
-    padding: 10px;
-    border-radius: 0 20px 0 20px;
-}
-
-.boardTitle, .boardDescription {
-    text-align: center;
-}
-
-.boardTitle {
-    color: white;
-    font-size: 2rem;
-}
-
-.boardDescription {
-    color: white;
-    font-size: 1.6rem;
-}
-
-.boardBody {
-    display: flex;
-    justify-content: space-around;
-    height: 80%;
-    padding: 10px;
-    position: relative;
-    top: 30px;
-}
-
-.boardLeft {
-    width: 100%;
-}
-
-.boardRight {
-    width: 100%;
-}
-
-.boardLeftForm {
-    color: white;
-    font-family: "Roboto Light", sans-serif;
-}
-
-.formLabel {
-    display: flex;
-}
-
-.formInput {
-    color: black;
-    background: lightyellow;
-    width: 180px;
-    transition: 1s;
-    margin-left: auto;
-    margin-right: 10px;
-    border-radius: 10px;
-    padding-left: 10px;
-    padding-top: 1px;
-}
-
-.formInput:hover {
-    transition: all 0.1s ease-in-out;
-    width: 220px;
-}
-
-.formButtonSpace {
-    display: flex;
-    justify-content: center;
-}
-
-.formButton {
-    background: whitesmoke;
-    margin: 0 2px;
-    width: 120px;
-    height: 40px;
-    transition: 0.2s;
-    border-radius: 10px;
-    color: black;
-}
-
-.formButton:hover {
-    transition: all 0.2s ease-in-out;
-    border-radius: 20px;
-    color: darkslategray;
-}
-
-.formButtonHistory {
-    background: #fd2727;
-    margin: 0 2px;
-    width: 120px;
-    height: 40px;
-    transition: 0.2s;
-    border-radius: 10px;
-    color: white;
-}
-
-.formButtonHistory:hover {
-    transition: all 0.2s ease-in-out;
-    border-radius: 20px;
-    background: black;
-    color: white;
-}
-
-.formButtonTable {
-    transition: 0.2s;
-    border-radius: 10px;
-    margin: 0 2px;
-    width: 120px;
-    height: 40px;
-    background: white;
-    color: black;
-}
-
-.formButtonTable:hover {
-    transition: 0.2s all ease-in-out;
-    border-radius: 20px;
-    background: white;
-    color: white;
-}
-
-.pcMonitorContainer {
-    background: white;
-    opacity: 90%;
-    background-size: cover; /* Resize the background image to cover the entire container */
-    z-index: 1;
-    position: relative;
-    top: 20%;
-    transform: rotateX(15deg) rotateY(30deg);
-    height: 440px;
-    box-shadow: 0 0 80px 20px white;
-}
-
-.pcMonitorText {
-    padding: 10px;
-}
-
-@keyframes fade-in-out {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes fade-out-in {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-}
-
-.table-gallery-container {
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.fade-in {
-    animation: fade-in 0.3s ease-in;
-}
-
-.fade-out {
-    animation: fade-out 0.3s ease-out;
-}
-
-@keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fade-out {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
+.logout-btn { background: transparent; border: 1px solid #f43f5e; color: #f43f5e; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
